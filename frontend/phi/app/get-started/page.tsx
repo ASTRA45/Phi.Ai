@@ -1,10 +1,15 @@
+import Link from "next/link";
+
 export default function GetStartedPage() {
     return (
       <div className="min-h-screen w-full bg-black text-white flex flex-col items-center px-6 py-24">
         <div className="max-w-3xl text-center space-y-6">
-          <h1 className="text-5xl font-bold tracking-tight">
-            Get Started with <span className="text-purple-400">Phi.ai</span>
-          </h1>
+
+        <Link href="/agent">
+        <button className="px-6 py-3 bg-pink-600 text-white rounded-full hover:bg-pink-700">
+            Get Started
+        </button>
+        </Link>
   
           <p className="text-lg text-gray-300 leading-relaxed">
             Everything you need to begin building with Phi.  
