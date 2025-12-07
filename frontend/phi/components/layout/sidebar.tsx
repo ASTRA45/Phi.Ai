@@ -44,8 +44,27 @@ export function Sidebar() {
         {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
       </button>
 
+      {/* ⭐ PHI.AI HEADER ⭐ */}
+      <div className="pt-8 pb-6 px-4 flex items-center gap-3">
+        <div
+          className={cn(
+            "text-3xl font-bold tracking-tight select-none",
+            collapsed ? "mx-auto" : ""
+          )}
+        >
+          ϕ
+        </div>
+
+        {!collapsed && (
+          <div className="text-xl font-semibold tracking-wide select-none">
+            Phi.AI
+          </div>
+        )}
+      </div>
+
       {/* Sidebar Content */}
-      <div className="p-4 mt-10 space-y-4">
+      <div className="p-4 space-y-4 overflow-y-auto">
+
         {!collapsed && (
           <Accordion type="single" collapsible>
             <AccordionItem value="agent-modes">
@@ -71,7 +90,7 @@ export function Sidebar() {
           </Accordion>
         )}
 
-        {/* Example Agent List */}
+        {/* Example Agents */}
         <div className="space-y-2">
           {["Agent 1", "Agent 2", "Agent 3"].map((item) => (
             <button
@@ -85,7 +104,7 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Fade border */}
+      {/* Right fade shadow */}
       {!collapsed && (
         <div className="absolute top-0 right-0 w-3 h-full bg-gradient-to-r from-black/20 to-transparent" />
       )}

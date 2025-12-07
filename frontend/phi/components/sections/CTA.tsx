@@ -1,9 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 
-export function CTA() {
+interface CTAProps {
+  onStart: () => void;
+}
+
+export function CTA({ onStart }: CTAProps) {
   return (
     <motion.section
       className="py-40 text-center"
@@ -13,9 +16,13 @@ export function CTA() {
       viewport={{ once: true }}
     >
       <h2 className="text-4xl font-bold mb-6">Ready to Build with Phi.ai?</h2>
-      <Button className="px-10 py-6 text-xl bg-pink-600 rounded-full">
+
+      <button
+        onClick={onStart}
+        className="px-6 py-3 bg-pink-500 text-white rounded-xl hover:bg-pink-600 transition"
+      >
         Get Started
-      </Button>
+      </button>
     </motion.section>
   );
 }

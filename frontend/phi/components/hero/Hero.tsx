@@ -1,11 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { GradientBackground } from "./GradientBackground";
 
-export function Hero() {
+interface HeroProps {
+  onStart: () => void;
+}
+
+export function Hero({ onStart }: HeroProps) {
   return (
     <section className="relative h-[100vh] flex flex-col items-center justify-center px-6 text-center">
       <GradientBackground />
@@ -18,7 +21,7 @@ export function Hero() {
         className="flex items-center gap-2 mb-4"
       >
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-xl font-bold">
-        Φ
+          Φ
         </div>
         <span className="text-lg font-medium">Phi.ai</span>
       </motion.div>
@@ -50,20 +53,22 @@ export function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.7 }}
       >
-        <Link href="/get-started">
-  <Button className="px-8 py-6 text-lg rounded-full">
-    Get Started
-  </Button>
-</Link>
+        {/* Get Started runs animation → THEN navigates */}
+        <button
+          onClick={onStart}
+          className="px-6 py-3 bg-pink-500 text-white rounded-xl hover:bg-pink-600 transition"
+        >
+          Get Started
+        </button>
 
+        {/* Learn More */}
         <Button
-  variant="outline"
-  className="!border-white !text-white !bg-transparent hover:!bg-white/10 hover:!text-white px-8 py-6 text-lg rounded-full"
->
-  Learn More
-</Button>
+          variant="outline"
+          className="!border-white !text-white !bg-transparent hover:!bg-white/10 hover:!text-white px-8 py-6 text-lg rounded-full"
+        >
+          Learn More
+        </Button>
       </motion.div>
     </section>
-    
   );
 }
