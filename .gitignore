@@ -1,0 +1,51 @@
+# Environment files
+.env
+.env.*
+*.env
+
+# Node environment
+frontend/.env
+frontend/.env.local
+frontend/.env.development
+frontend/.env.production
+
+# Python venv
+venv/
+backend/venv/
+
+# Build artifacts
+__pycache__/
+*.pyc
+
+# Next.js
+.next/
+out/
+
+# Logs
+*.log
+
+
+# Environment
+.env
+.env.*
+*.env
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Python
+venv/
+backend/venv/
+__pycache__/
+*.pyc
+
+# Next.js
+.next/
+out/
+
+# Logs
+*.log
