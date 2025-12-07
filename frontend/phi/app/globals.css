@@ -120,3 +120,24 @@
     @apply bg-background text-foreground;
   }
 }
+/* Animated gradient border for chat input */
+.animated-border {
+  position: relative;
+  border-radius: 16px;
+  padding: 2px; /* thickness of the animated border */
+  background: linear-gradient(
+    90deg,
+    #ff66c4,
+    #a450ff,
+    #ff66c4
+  );
+  background-size: 300% 300%;
+  animation: borderFlow 5s ease infinite;
+}
+
+@keyframes borderFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
