@@ -5,10 +5,16 @@ import { useRouter } from "next/navigation";
 
 import { Hero } from "@/components/hero/Hero";
 import { About } from "@/components/sections/About";
+import { WhatIsPhi } from "@/components/sections/WhatIsPhi";
+import { HybridArchitecture } from "@/components/sections/HybridArchitecture";
 import { Features } from "@/components/sections/Features";
 import { Architecture } from "@/components/sections/Architecture";
 import { UseCases } from "@/components/sections/UseCases";
 import { CTA } from "@/components/sections/CTA";
+
+// ⭐ NEW IMPORTS — Interactive Scroll Sections
+import { AgentParallax } from "@/components/sections/AgentParallax";
+import { CorePillars } from "@/components/sections/CorePillars";
 
 export default function Home() {
   const router = useRouter();
@@ -26,11 +32,16 @@ export default function Home() {
   return (
     <main className="relative">
 
-      {/* Pass handleStart to Hero + CTA */}
-      <Hero onStart={handleStart} />
-      <About />
+      {/* HERO SECTION */}
+      <Hero/>
+      <AgentParallax />
+
+      {/* ⭐ NEW APPLE WATCH ULTRA–STYLE PINNED SCROLL SECTION */}
+      <CorePillars />
       <Features />
-      <Architecture />
+      {/* EXISTING SITE SECTIONS */}
+      <WhatIsPhi /> 
+      <HybridArchitecture />
       <UseCases />
       <CTA onStart={handleStart} />
 
