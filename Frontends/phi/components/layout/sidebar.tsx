@@ -1,26 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-
 import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
-
-import {
-  Bot,
-  Brain,
-  Sparkles,
-  Settings,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 
+/* Persona Type */
+interface Persona {
+  userId: string;
+  riskTolerance: string;
+  markets: string[];
+  horizon: string;
+  domainTags: string[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+
+  // Persona state (FIXED TYPE)
+  const [persona, setPersona] = useState<Persona | null>(null);
+
+  useEffect(() => {
+    async function loadPersona() {
+      try {
+        const res = await fetch("http://localhost:8000/persona/demoUser");
+        if (!res.ok) return;
+
+        const data: Persona = await res.json();
+        setPersona(data);
+      } catch (e) {
+        console.error("Failed to load persona", e);
+      }
+    }
+
+    loadPersona();
+  }, []);
 
   const brandGradient =
     "bg-gradient-to-b from-[#360167] via-[#7C085A] to-[#CF268A]";
@@ -50,57 +68,41 @@ export function Sidebar() {
       >
         <div className="text-3xl font-bold text-[#FFB4C9]">ϕ</div>
 
-        {!collapsed && (
-          <div className="text-xl font-semibold">Phi.AI</div>
-        )}
+        {!collapsed && <div className="text-xl font-semibold">Phi.AI</div>}
       </div>
 
-      {/* Sidebar Content */}
-      <div className="p-4 space-y-4 overflow-y-auto">
+      {/* PERSONA BLOCK */}
+      {!collapsed && persona && (
+        <div className="px-4">
+          <div className="mt-4 p-4 rounded-xl bg-white/10 border border-white/20 space-y-2">
+            <h2 className="text-lg font-semibold mb-2">Your Persona</h2>
 
-        {/* Agent Modes */}
-        {!collapsed && (
-          <Accordion type="single" collapsible>
-            <AccordionItem value="agent-modes">
-              <AccordionTrigger className="text-white bg-white/10 px-3 py-2 rounded-md">
-                Agent Modes
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-2 mt-3">
-                  {[
-                    { label: "Default Agent", icon: Bot },
-                    { label: "Reasoning Mode", icon: Brain },
-                    { label: "Creative Mode", icon: Sparkles },
-                    { label: "System Tools", icon: Settings },
-                  ].map(({ label, icon: Icon }) => (
-                    <button
-                      key={label}
-                      className="w-full flex items-center gap-2 px-3 py-2 
-                                 bg-white/10 hover:bg-white/20 rounded-md text-white"
-                    >
-                      <Icon size={16} />
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        )}
+            <p className="text-sm">
+              <span className="font-semibold">Risk:</span>{" "}
+              {persona.riskTolerance}
+            </p>
 
-        {/* Agents */}
-        <div className="space-y-2">
-          {["Agent 1", "Agent 2", "Agent 3"].map((item) => (
-            <button
-              key={item}
-              className="w-full bg-white/10 hover:bg-white/20 text-left 
-                         px-3 py-2 rounded-md text-white"
-            >
-              {!collapsed && item}
-            </button>
-          ))}
+            <p className="text-sm">
+              <span className="font-semibold">Markets:</span>{" "}
+              {persona.markets.join(", ")}
+            </p>
+
+            <p className="text-sm">
+              <span className="font-semibold">Horizon:</span>{" "}
+              {persona.horizon}
+            </p>
+
+            <p className="text-sm">
+              <span className="font-semibold">Domains:</span>{" "}
+              {persona.domainTags.join(", ")}
+            </p>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* EMPTY FILLER */}
+      <div className="flex-1" />
+
     </aside>
   );
 }

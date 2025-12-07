@@ -4,6 +4,21 @@ import { useState, useRef, useEffect } from "react";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Volume2 } from "lucide-react";
 
+// ------------------------------------------------------
+// 🔎 Natural Language → Event ID Mapping
+// (You can upgrade this later. This is the simple version.)
+// ------------------------------------------------------
+function extractEventIdFromInput(text: string): string {
+  const t = text.toLowerCase();
+
+  if (t.includes("bitcoin") || t.includes("btc")) return "btc-up";
+  if (t.includes("ethereum") || t.includes("eth")) return "eth-up";
+  if (t.includes("trump") || t.includes("president")) return "trump-win";
+  if (t.includes("stock") || t.includes("market")) return "stocks-up";
+
+  return "generic-event";
+}
+
 export default function GetStartedPage() {
   const [messages, setMessages] = useState([
     {
@@ -20,7 +35,7 @@ export default function GetStartedPage() {
   }, [messages]);
 
   // ----------------------------------------
-  // 🔊 TTS PLAYBACK WITH DEBUG LOGGING
+  // 🔊 TTS
   // ----------------------------------------
   const playAudio = async (text: string) => {
     try {
@@ -30,24 +45,83 @@ export default function GetStartedPage() {
         body: JSON.stringify({ text }),
       });
 
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        console.error("TTS failed:", err);
-        return;
-      }
+      if (!res.ok) return console.error("TTS failed");
 
       const audioBlob = await res.blob();
       const url = URL.createObjectURL(audioBlob);
 
-      const audio = new Audio(url);
-      audio.play();
+      new Audio(url).play();
     } catch (err) {
       console.error("TTS error:", err);
     }
   };
 
+  // ------------------------------------------------------
+  // 🤖 SEND NATURAL LANGUAGE → BACKEND PREDICT → CHAT
+  // ------------------------------------------------------
+  const handlePredict = async (text: string) => {
+    const eventId = extractEventIdFromInput(text);
+
+    try {
+      const res = await fetch("http://localhost:8000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: "demoUser",
+          eventId,
+          seed: Math.floor(Math.random() * 10000),
+        }),
+      });
+
+      const prediction = await res.json();
+
+      if (!res.ok) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now(),
+            role: "assistant",
+            content: "⚠️ Prediction failed. Please try again.",
+          },
+        ]);
+        return;
+      }
+
+      // Format the prediction into a chat response
+      const formatted = `
+📊 **Prediction Result**
+**Event:** ${eventId}
+
+**Probability Up:** ${prediction.probabilityUp}
+**Confidence:** ${prediction.confidence}
+**Risk Tier:** ${prediction.riskTier}
+
+💬 **Reasons:**
+${prediction.explanationBullets.map((b: string) => "• " + b).join("\n")}
+      `.trim();
+
+      // Add to chat
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now(), role: "assistant", content: formatted },
+      ]);
+
+      playAudio(formatted);
+    } catch (err) {
+      console.error("Prediction error:", err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          role: "assistant",
+          content: "⚠️ Prediction error occurred.",
+        },
+      ]);
+    }
+  };
+
   // ----------------------------------------
-  // 🤖 SEND USER MESSAGE → GPT → DISPLAY + SPEAK
+  // 🧠 GPT (kept exactly as before)
   // ----------------------------------------
   const sendMessageToGPT = async (text: string) => {
     try {
@@ -62,35 +136,53 @@ export default function GetStartedPage() {
       if (!res.ok) {
         setMessages((prev) => [
           ...prev,
-          { id: Date.now(), role: "assistant", content: "Error: GPT request failed." },
+          {
+            id: Date.now(),
+            role: "assistant",
+            content: "Error: GPT request failed.",
+          },
         ]);
-        console.error("GPT error:", data);
         return;
       }
 
       const reply = data.reply || "No response.";
 
-      // Add assistant reply
       setMessages((prev) => [
         ...prev,
         { id: Date.now(), role: "assistant", content: reply },
       ]);
 
-      // 🔊 Auto-play TTS for assistant messages
       playAudio(reply);
-
     } catch (err) {
       console.error("GPT fetch error:", err);
     }
   };
 
+  // ----------------------------------------
+  // COMBINED SEND HANDLER
+  // ----------------------------------------
+  const handleSend = async (text: string) => {
+    // 1. Add user message
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now(), role: "user", content: text },
+    ]);
+
+    // 2. Call backend prediction
+    await handlePredict(text);
+
+    // 3. Also call GPT (optional)
+    await sendMessageToGPT(text);
+  };
+
+  // ----------------------------------------
+  // UI
+  // ----------------------------------------
   return (
     <div className="flex h-screen overflow-hidden bg-[#20002E]">
       <Sidebar />
 
-      {/* MAIN CHAT WINDOW */}
       <div className="flex flex-col flex-1 bg-[#1A0221] text-white">
-
         {/* HEADER */}
         <div className="px-10 py-6 border-b border-[#7C085A]/30">
           <h1 className="text-2xl font-semibold flex items-center gap-2">
@@ -102,13 +194,15 @@ export default function GetStartedPage() {
           </p>
         </div>
 
-        {/* CHAT AREA */}
+        {/* CHAT */}
         <div className="flex-1 relative px-10 py-10 overflow-y-auto">
           <div className="space-y-6 mt-6">
             {messages.map((m) => (
               <div
                 key={m.id}
-                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                className={`flex ${
+                  m.role === "user" ? "justify-end" : "justify-start"
+                }`}
               >
                 <div
                   className={`
@@ -122,7 +216,6 @@ export default function GetStartedPage() {
                 >
                   {m.content}
 
-                  {/* 🔊 PLAY FOR ASSISTANT MESSAGES */}
                   {m.role === "assistant" && (
                     <button
                       onClick={() => playAudio(m.content)}
@@ -138,27 +231,22 @@ export default function GetStartedPage() {
           </div>
         </div>
 
-        {/* INPUT BOX */}
+        {/* INPUT */}
         <div className="border-t border-[#6B0772]/40 px-8 py-6">
           <form
             className="flex items-center gap-4"
             onSubmit={(e) => {
               e.preventDefault();
-              const input = e.currentTarget.elements.namedItem("prompt") as HTMLInputElement;
+              const input = e.currentTarget.elements.namedItem(
+                "prompt"
+              ) as HTMLInputElement;
+
               if (!input.value.trim()) return;
 
-              const text = input.value;
-
-              // Add user's message
-              setMessages((prev) => [
-                ...prev,
-                { id: Date.now(), role: "user", content: text },
-              ]);
-
+              const text = input.value.trim();
               input.value = "";
 
-              // Send to GPT
-              sendMessageToGPT(text);
+              handleSend(text);
             }}
           >
             <input
@@ -171,11 +259,10 @@ export default function GetStartedPage() {
               type="submit"
               className="px-6 py-3 rounded-xl text-white font-medium bg-[#AF1281] hover:bg-[#CF268A] transition"
             >
-              Send
+              Predict
             </button>
           </form>
         </div>
-
       </div>
     </div>
   );
