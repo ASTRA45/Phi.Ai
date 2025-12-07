@@ -49,5 +49,107 @@
     "txHash": null,
     "neofsObjectId": null,
     "createdAt": "2025-12-07 06:29:24.862289"
+  },
+  {
+    "id": "67696a99-cf19-4727-ad4a-29e7a961eacc",
+    "userId": "test123",
+    "eventId": "eth-up",
+    "probabilityUp": 0.64,
+    "confidence": 0.61,
+    "riskTier": "medium",
+    "seed": 42.0,
+    "explanationBullets": [
+      "Using fallback stub because agent output was not valid JSON or tool failed.",
+      "Seed used: 42.0"
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 08:08:45.541358"
+  },
+  {
+    "id": "d2849a95-4115-4094-ab68-f4cdd524c2e5",
+    "userId": "demoUser",
+    "eventId": "eth-up",
+    "probabilityUp": 0.64,
+    "confidence": 0.61,
+    "riskTier": "medium",
+    "seed": 42.0,
+    "explanationBullets": [
+      "Using fallback stub because agent output was not valid JSON or tool failed.",
+      "Seed used: 42.0"
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 08:41:08.233302"
+  },
+  {
+    "id": "d4019cf1-a71b-485d-ba01-7e0fd102ef38",
+    "userId": "demoUser",
+    "eventId": "btc-down",
+    "probabilityUp": 0.64,
+    "confidence": 0.61,
+    "riskTier": "medium",
+    "seed": 42.0,
+    "explanationBullets": [
+      "Using fallback stub because agent output was not valid JSON or tool failed.",
+      "Seed used: 42.0"
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 08:50:48.321443"
+  },
+  {
+    "id": "93ecb06b-1270-4342-bdff-b059b693c9ee",
+    "userId": "demoUser",
+    "eventId": "eth-up",
+    "probabilityUp": 0.64,
+    "confidence": 0.61,
+    "riskTier": "medium",
+    "seed": 42.0,
+    "explanationBullets": [
+      "Using fallback stub because agent output was not valid JSON or tool failed.",
+      "Seed used: 42.0"
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 08:58:17.384837"
+  },
+  {
+    "id": "1abb131c-7bf8-4c47-95cb-bff3942b6a8b",
+    "userId": "demoUser",
+    "eventId": "gold-up",
+    "probabilityUp": 0.64,
+    "confidence": 0.61,
+    "riskTier": "medium",
+    "seed": 42.0,
+    "explanationBullets": [
+      "Using fallback stub because agent output was not valid JSON or tool failed.",
+      "Seed used: 42.0"
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 08:58:27.772539"
+  },
+  {
+    "id": "08e57b3a-ed32-4a08-ba14-b31722ff9c9e",
+    "userId": "demoUser",
+    "eventId": "apple-earnings",
+    "probabilityUp": 0.64,
+    "confidence": 0.61,
+    "riskTier": "medium",
+    "seed": 42.0,
+    "explanationBullets": [
+      "Using fallback stub because agent output was not valid JSON or tool failed.",
+      "Seed used: 42.0"
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 08:58:31.608535"
   }
 ]

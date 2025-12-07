@@ -9,5 +9,31 @@
     ],
     "updatedAt": "2025-12-07T06:30:36.896569",
     "createdAt": "2025-12-07T06:20:38.442562"
+  },
+  "test123": {
+    "userId": "test123",
+    "riskTolerance": "low",
+    "markets": [
+      "crypto"
+    ],
+    "horizon": "7d",
+    "domainTags": [
+      "test"
+    ],
+    "updatedAt": "2025-12-07T08:08:35.730337",
+    "createdAt": "2025-12-07T08:08:35.730337"
+  },
+  "demoUser": {
+    "userId": "demoUser",
+    "riskTolerance": "medium",
+    "markets": [
+      "stocks"
+    ],
+    "horizon": "30d",
+    "domainTags": [
+      "stocks"
+    ],
+    "updatedAt": "2025-12-07T09:03:28.710476",
+    "createdAt": "2025-12-07T08:41:02.658758"
   }
 }

@@ -18,11 +18,11 @@ export function CTA({ onStart }: CTAProps) {
       <h2 className="text-4xl font-bold mb-6">Ready to Build with Phi.ai?</h2>
 
       <button
-        onClick={onStart}
-        className="px-6 py-3 bg-pink-500 text-white rounded-xl hover:bg-pink-600 transition"
-      >
-        Get Started
-      </button>
+  onClick={() => window.location.href = "/persona/risk"}
+  className="px-6 py-3 bg-pink-500 text-white rounded-xl hover:bg-pink-600 transition"
+>
+  Get Started
+</button>
     </motion.section>
   );
 }
