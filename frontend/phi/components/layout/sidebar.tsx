@@ -65,20 +65,38 @@ export function Sidebar() {
       {/* Sidebar Content */}
       <div className="p-4 space-y-4 overflow-y-auto">
 
+        {/* AGENT MODES ACCORDION */}
         {!collapsed && (
           <Accordion type="single" collapsible>
             <AccordionItem value="agent-modes">
-              <AccordionTrigger className="text-white font-semibold">
-                Agent Modes
+
+              {/* ⭐ NEW CLEAR, BUTTON-LIKE DROPDOWN TRIGGER ⭐ */}
+              <AccordionTrigger
+                className="
+                  flex items-center justify-between w-full
+                  px-4 py-3
+                  bg-white/15 hover:bg-white/25
+                  rounded-lg
+                  font-semibold text-white
+                  transition
+                  border border-white/30
+                  backdrop-blur-sm
+                "
+              >
+                <span>Agent Modes</span>
               </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-2 mt-2">
+
+              <AccordionContent className="mt-3">
+                <div className="space-y-2">
                   {agentModes.map(({ label, icon: Icon }) => (
                     <button
                       key={label}
-                      className="w-full flex items-center gap-2 px-3 py-2 
-                                 bg-white/10 hover:bg-white/20 
-                                 transition rounded-md text-white"
+                      className="
+                        w-full flex items-center gap-2 px-3 py-2
+                        bg-white/10 hover:bg-white/20
+                        rounded-md text-white
+                        transition
+                      "
                     >
                       <Icon size={16} />
                       {label}
@@ -86,6 +104,7 @@ export function Sidebar() {
                   ))}
                 </div>
               </AccordionContent>
+
             </AccordionItem>
           </Accordion>
         )}
