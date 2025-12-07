@@ -73,14 +73,51 @@ Pay-per-agent call
 Fully compatible with SpoonOS x402 gateway
 
 # Architecture Overview
-Frontend (Next.js) → Backend API (FastAPI)
-                         │
-                         ▼
-                SpoonOS Agent Pipeline
-      Data → Context/RAG → Model → Risk → Publisher
-                         │
-                         ├── Neo Smart Contract (PredictionRegistry)
-                         └── NeoFS (reasoning logs / persona docs)
+ ## 🏗️ Architecture Overview
+
+```mermaid
+flowchart TD
+  subgraph FE[Frontend (Next.js)]
+    FE1[Persona Setup UI]
+    FE2[Prediction Request UI]
+    FE3[History & Charts]
+    FE4[Developer API View]
+  end
+
+  subgraph BE[Backend API (FastAPI, Python)]
+    BE1[/POST /persona\/update/]
+    BE2[/GET /persona/{id}/]
+    BE3[/POST /predict/]
+    BE4[/GET /predictions/{user}/]
+  end
+
+  subgraph AG[SpoonOS Multi-Agent Pipeline]
+    DA[DataAgent]
+    RA[RAGAgent]
+    MA[ModelAgent]
+    RK[RiskAgent]
+    PB[Publisher]
+    DA --> RA --> MA --> RK --> PB
+  end
+
+  subgraph ONCHAIN[On-Chain & Storage Trust Layer]
+    SC[Neo Smart Contract\nPredictionRegistry]
+    FS[NeoFS\nReasoning Storage]
+  end
+
+  subgraph PAY[x402 Payments (Optional)]
+    X1[x402 Facilitator]
+    X2[Payment-Verified\nAgent Call]
+  end
+
+  FE -->|Persona updates,\nPrediction requests| BE
+  BE -->|Calls agents via SpoonOS| AG
+  AG -->|Decision hash,\nprobability,\nconfidence,\nriskTier| SC
+  AG -->|Reasoning logs,\ncontext blobs| FS
+
+  PAY -->|X-PAYMENT headers| BE
+  PAY -->|Facilitates paid\nagent invocations| AG
+
 
 # Tech Stack
 Frontend
