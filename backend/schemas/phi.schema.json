@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "PhiAI Schema",
+    "type": "object",
+    "properties": {
+      "persona": {
+        "type": "object",
+        "properties": {
+          "userId": { "type": "string" },
+          "riskTolerance": {
+            "type": "string",
+            "enum": ["low", "medium", "high"]
+          },
+          "markets": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["BTC", "ETH", "DeFi", "NFTs", "Other"]
+            }
+          },
+          "horizon": {
+            "type": "string",
+            "enum": ["24h", "7d", "30d"]
+          },
+          "domainTags": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["userId", "riskTolerance", "markets", "horizon"]
+      },
+      "prediction": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "userId": { "type": "string" },
+          "eventId": { "type": "string" },
+          "probabilityUp": { "type": "number" },
+          "confidence": { "type": "number" },
+          "riskTier": {
+            "type": "string",
+            "enum": ["low", "medium", "medium-high", "high"]
+          },
+          "seed": { "type": "number" },
+          "explanationBullets": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "agentVersion": { "type": "string" },
+          "txHash": { "type": "string" },
+          "neofsObjectId": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        },
+        "required": [
+          "id",
+          "userId",
+          "eventId",
+          "probabilityUp",
+          "confidence",
+          "riskTier",
+          "seed",
+          "explanationBullets",
+          "agentVersion",
+          "createdAt"
+        ]
+      }
+    }
+  }
+  

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "9841865c-b427-4afb-9bde-5e63e42c8ef0",
+    "userId": "demo1",
+    "eventId": "BTC_24h",
+    "probabilityUp": 0.55,
+    "confidence": 0.75,
+    "riskTier": "medium",
+    "seed": 0.26169716910241525,
+    "explanationBullets": [
+      "Fallback parsing because agent output was not pure JSON.",
+      "Seed used: 0.26169716910241525"
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 04:47:11.361073"
+  },
+  {
+    "id": "d8b9040f-267a-40e4-93ac-ecd4703f3620",
+    "userId": "demo1",
+    "eventId": "BTC_24h",
+    "probabilityUp": 0.62,
+    "confidence": 0.75,
+    "riskTier": "medium",
+    "seed": 0.1499604925603344,
+    "explanationBullets": [
+      "Recent market trends indicate a moderate upward momentum for BTC.",
+      "Technical indicators show potential for price recovery within the next 24 hours.",
+      "Market sentiment is cautiously optimistic, supporting a likelihood of price increase.",
+      "Volatility remains present, but overall risk is manageable for medium-risk tolerance."
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 04:51:58.418753"
+  },
+  {
+    "id": "6558579a-80cc-4e94-aeec-4b2cac67c703",
+    "userId": "demo1",
+    "eventId": "BTC_24h",
+    "probabilityUp": 0.55,
+    "confidence": 0.65,
+    "riskTier": "medium",
+    "seed": 0.06880867352416631,
+    "explanationBullets": [
+      "With a medium risk tolerance and a 24-hour horizon, a slight upward trend is expected.",
+      "Recent market sentiment indicates cautious optimism, but volatility remains a concern.",
+      "Technical indicators show mixed signals, suggesting potential for both gains and losses."
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 05:03:17.918480"
+  }
+]

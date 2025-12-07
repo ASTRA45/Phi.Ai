@@ -1,0 +1,18 @@
+{
+    "persona": {
+      "riskTolerance": "low|medium|high",
+      "markets": ["BTC", "ETH", "DeFi", "NFTs"],
+      "horizon": "24h|7d|30d",
+      "domainTags": ["Crypto", "Macro", "Tech"]
+    },
+    "prediction": {
+      "eventId": "BTC_24h",
+      "probabilityUp": 0.65,
+      "confidence": 0.81,
+      "riskTier": "medium-high",
+      "seed": 0.437,
+      "txHash": "0x...",
+      "neofsObjectId": "hash-or-oid"
+    }
+  }
+  

@@ -1,0 +1,53 @@
+[
+  {
+    "id": "1c96b754-8ac5-4348-9c87-8f780ffc6688",
+    "userId": "demo1",
+    "eventId": "BTC_24h",
+    "probabilityUp": 0.52,
+    "confidence": 0.67,
+    "riskTier": "medium",
+    "seed": 0.437,
+    "explanationBullets": [
+      "Using fallback stub because agent output was not valid JSON or tool failed.",
+      "Seed used: 0.437"
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 06:22:02.097661"
+  },
+  {
+    "id": "280ef40e-4c38-4615-8b29-ca6105ae4f79",
+    "userId": "demo1",
+    "eventId": "BTC_24h",
+    "probabilityUp": 0.52,
+    "confidence": 0.67,
+    "riskTier": "medium",
+    "seed": 0.437,
+    "explanationBullets": [
+      "Using fallback stub because agent output was not valid JSON or tool failed.",
+      "Seed used: 0.437"
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 06:28:17.921397"
+  },
+  {
+    "id": "8be1addb-cbc8-4428-ba23-49593ef9ef87",
+    "userId": "demo1",
+    "eventId": "BTC_24h",
+    "probabilityUp": 0.59,
+    "confidence": 0.85,
+    "riskTier": "medium",
+    "seed": 0.48754814908675137,
+    "explanationBullets": [
+      "Using fallback stub because agent output was not valid JSON or tool failed.",
+      "Seed used: 0.48754814908675137"
+    ],
+    "agentVersion": "v0.1-spoon",
+    "txHash": null,
+    "neofsObjectId": null,
+    "createdAt": "2025-12-07 06:29:24.862289"
+  }
+]

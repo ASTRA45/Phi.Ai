@@ -1,0 +1,15 @@
+{
+  "demo1": {
+    "userId": "demo1",
+    "riskTolerance": "medium",
+    "markets": [
+      "BTC"
+    ],
+    "horizon": "24h",
+    "domainTags": [
+      "Crypto"
+    ],
+    "updatedAt": "2025-12-07T04:42:46.167456",
+    "createdAt": "2025-12-07T04:42:46.167456"
+  }
+}
