@@ -15,8 +15,8 @@ x402 pay-per-prediction support for monetization
 
 Built with SpoonOS, Next.js, FastAPI, Neo N3, and NeoFS.
 
-🚀 Features
-🔸 AI Agent Layer (SpoonOS)
+ # Features
+AI Agent Layer (SpoonOS)
 
 Multi-agent pipeline:
 
@@ -34,7 +34,7 @@ Deterministic predictions via seeds
 
 Rich explanations & traceable decision metadata
 
-🔸 On-Chain Trust Layer (Neo)
+# On-Chain Trust Layer (Neo)
 
 Smart Contract: PredictionRegistry
 
@@ -50,7 +50,7 @@ Agent version
 
 Allows dApps and wallets to verify AI decisions
 
-🔸 Storage Layer (NeoFS)
+# Storage Layer (NeoFS)
 
 Stores:
 
@@ -62,7 +62,7 @@ Context embeddings
 
 Off-chain, verifiable, decentralized storage
 
-🔸 Monetization (x402)
+# Monetization (x402)
 
 Supports:
 
@@ -72,7 +72,7 @@ Pay-per-agent call
 
 Fully compatible with SpoonOS x402 gateway
 
-🖥️ Architecture Overview
+# Architecture Overview
 Frontend (Next.js) → Backend API (FastAPI)
                          │
                          ▼
@@ -82,7 +82,7 @@ Frontend (Next.js) → Backend API (FastAPI)
                          ├── Neo Smart Contract (PredictionRegistry)
                          └── NeoFS (reasoning logs / persona docs)
 
-📦 Tech Stack
+# Tech Stack
 Frontend
 
 Next.js / React
@@ -111,7 +111,7 @@ Optional: NeoID for identity
 
 Optional: Trustless x402 Payments
 
-📂 Project Structure
+# 📂 Project Structure
 phi-ai/
 ├─ phi-frontend/          # Next.js app
 │  ├─ app/
@@ -134,7 +134,7 @@ phi-ai/
 │
 └─ README.md
 
-⚙️ Backend Setup
+# Backend Setup
 1. Create backend venv
 cd phi-backend
 uv venv .venv
@@ -177,7 +177,7 @@ GET /predictions/{userId}
 
 GET /predictions/by-event/{eventId}
 
-🔮 AI Agent (SpoonOS)
+# AI Agent (SpoonOS)
 
 The backend agent lives in:
 
@@ -203,7 +203,7 @@ agent_result = await run_prediction_with_spoon(
     seed=body.seed,
 )
 
-🪙 x402 Integration (Optional)
+# x402 Integration (Optional)
 
 Enable pay-per-prediction.
 
@@ -227,7 +227,7 @@ Prediction
 
 X-PAYMENT-RESPONSE receipt
 
-🧱 Smart Contract (PredictionRegistry)
+# Smart Contract (PredictionRegistry)
 
 The Neo smart contract logs:
 
@@ -245,11 +245,11 @@ NeoFS object ID
 
 timestamp
 
-Contract path:
+# Contract path:
 
 contracts/PredictionRegistry.cs
 
-☁️ NeoFS Reasoning Storage
+NeoFS Reasoning Storage
 
 The Publisher step (backend) uploads:
 
@@ -259,11 +259,11 @@ persona context snapshot
 
 agent trace
 
-Your FastAPI can return a link:
+# Your FastAPI can return a link:
 
 GET /neofs/{objectId}
 
-🧪 Developer Quick Start
+Developer Quick Start
 Persona Creation
 curl -X POST http://localhost:8000/persona/update \
   -H "Content-Type: application/json" \
@@ -283,7 +283,7 @@ curl -X POST http://localhost:8000/predict \
     "eventId": "BTC_24h"
   }'
 
-🎨 Frontend Setup
+# Frontend Setup
 
 Inside phi-frontend:
 
@@ -303,7 +303,7 @@ Developer API view
 
 On-chain explorer links
 
-🏁 Roadmap
+# Roadmap
 Phase 1 — Core Functionality
 
 ✔ SpoonOS multi-agent
@@ -332,11 +332,11 @@ Phase 3 — Monetization
 
 ⬜ DeFi oracle access
 
-🤝 Contributing
+# Contributing
 
 PRs welcome!
 If you add agents, tools, or storage modules, please document them in the /docs folder.
 
-📜 License
+# License
 
 MIT License.
