@@ -2,12 +2,26 @@
 import { NextResponse } from "next/server";
 import { ElevenLabsClient } from "elevenlabs";
 
+// 🧹 Clean text so ElevenLabs doesn’t crash
+function sanitizeForTTS(text: string) {
+  return text
+    .replace(/[*_~`>#]/g, "")              // remove markdown
+    .replace(/[•●▪︎▪]/g, "")               // remove bullets
+    .replace(/[^\w\s.,:;%()!?/-]/g, "")    // remove emojis & odd unicode
+    .replace(/\n+/g, " ")                  // collapse newlines
+    .replace(/\s+/g, " ")                  // collapse spaces
+    .trim();
+}
+
 export async function POST(req: Request) {
   console.log("🔊 /api/tts hit");
 
   try {
     const { text } = await req.json();
-    console.log("📥 TTS text:", text);
+    console.log("📥 Raw TTS text:", text);
+
+    const cleanedText = sanitizeForTTS(text);
+    console.log("🧼 Cleaned TTS text:", cleanedText);
 
     const apiKey = process.env.ELEVENLABS_API_KEY;
 
@@ -21,16 +35,16 @@ export async function POST(req: Request) {
     const client = new ElevenLabsClient({ apiKey });
     console.log("⚙️ ElevenLabs client created");
 
-    // 🔥 NEW SDK CALL — THIS RETURNS A Node.js Readable STREAM
+    // Generate audio
     const audioStream = await client.generate({
       voice: "Rachel",
       model_id: "eleven_flash_v2",
-      text,
+      text: cleanedText,
     });
 
     console.log("📡 Stream received from ElevenLabs");
 
-    // --- FIX: Use Node.js stream reader ---
+    // Convert to Buffer (flash_v2 returns Node stream)
     const chunks: Uint8Array[] = [];
 
     for await (const chunk of audioStream) {

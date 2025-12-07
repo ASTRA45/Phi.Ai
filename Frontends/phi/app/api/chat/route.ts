@@ -1,48 +1,51 @@
+// app/api/chat/route.ts
 import { NextResponse } from "next/server";
-import OpenAI from "openai/index.js";
+
+const API_BASE = "http://localhost:8000";
 
 export async function POST(req: Request) {
+  console.log("🔥 CHAT HIT @", Date.now()); // <-- CORRECT SPOT
+
   try {
-    const { message } = await req.json();
+    const body = await req.json();
+    const message = body.message || "Hello";
 
-    if (!message) {
-      return NextResponse.json({ error: "Message missing" }, { status: 400 });
-    }
+    // Call your existing backend prediction API
+    const res = await fetch(`${API_BASE}/predict`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: "demo1",
+        eventId: "generic-event",
+      }),
+    });
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
+    if (!res.ok) {
       return NextResponse.json(
-        { error: "Missing OPENAI_API_KEY" },
+        { reply: "Prediction backend returned an error." },
         { status: 500 }
       );
     }
 
-    const client = new OpenAI({ apiKey });
+    const data = await res.json();
 
-    const completion = await client.chat.completions.create({
-      model: "gpt-4.1-mini", // fast + cheap, change to "gpt-4.1" if preferred
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are Phi.AI Assistant — concise, intelligent, and helpful.",
-        },
-        { role: "user", content: message },
-      ],
-      max_tokens: 300,
-    });
+    // Clean, no leading newline
+    const reply = `📊 Prediction Result
+Event: ${data.eventId}
 
-    const reply =
-      completion.choices?.[0]?.message?.content ||
-      "I'm not sure how to respond.";
+Probability Up: ${data.probabilityUp.toFixed(2)}
+Confidence: ${data.confidence.toFixed(2)}
+Risk Tier: ${data.riskTier}
+
+Reasons:
+${data.explanationBullets.map((b: string) => "• " + b).join("\n")}`;
 
     return NextResponse.json({ reply });
+
   } catch (err: any) {
+    console.error("CHAT ERROR", err);
     return NextResponse.json(
-      {
-        error: "OpenAI request failed",
-        details: err?.message || "unknown error",
-      },
+      { reply: "Chat service failed." },
       { status: 500 }
     );
   }

@@ -6,7 +6,6 @@ import { Volume2 } from "lucide-react";
 
 // ------------------------------------------------------
 // 🔎 Natural Language → Event ID Mapping
-// (You can upgrade this later. This is the simple version.)
 // ------------------------------------------------------
 function extractEventIdFromInput(text: string): string {
   const t = text.toLowerCase();
@@ -24,18 +23,18 @@ export default function GetStartedPage() {
     {
       id: 1,
       role: "system",
-      content: "Welcome to the Phi Agent Playground. How can I assist you?",
+      content:
+        "👋 Welcome to the Phi Agent Playground!\nAsk anything — I will generate a structured prediction + GPT commentary.",
     },
   ]);
 
   const messageEndRef = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   // ----------------------------------------
-  // 🔊 TTS
+  // 🔊 Text To Speech (TTS)
   // ----------------------------------------
   const playAudio = async (text: string) => {
     try {
@@ -56,14 +55,21 @@ export default function GetStartedPage() {
     }
   };
 
-  // ------------------------------------------------------
-  // 🤖 SEND NATURAL LANGUAGE → BACKEND PREDICT → CHAT
-  // ------------------------------------------------------
-  const handlePredict = async (text: string) => {
+  // --------------------------------------------------------
+  // 🚀 MAIN SEND HANDLER — PRETTY COMBINED ASSISTANT MESSAGE
+  // --------------------------------------------------------
+  const handleSend = async (text: string) => {
+    // Display user message
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now(), role: "user", content: text },
+    ]);
+
     const eventId = extractEventIdFromInput(text);
 
     try {
-      const res = await fetch("http://localhost:8000/predict", {
+      // 1️⃣ Fetch prediction
+      const predRes = await fetch("http://localhost:8000/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -73,106 +79,64 @@ export default function GetStartedPage() {
         }),
       });
 
-      const prediction = await res.json();
+      const prediction = await predRes.json();
 
-      if (!res.ok) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: Date.now(),
-            role: "assistant",
-            content: "⚠️ Prediction failed. Please try again.",
-          },
-        ]);
-        return;
-      }
+      const predictionSection = `
+🎯 **Event:** \`${eventId}\`
+📈 **Probability Up:** ${prediction.probabilityUp}
+🔍 **Confidence:** ${prediction.confidence}
+⚠️ **Risk Tier:** ${prediction.riskTier}
 
-      // Format the prediction into a chat response
-      const formatted = `
-📊 **Prediction Result**
-**Event:** ${eventId}
+📝 **Reasons**
+${prediction.explanationBullets.map((b: string) => `• ${b}`).join("\n")}
+`.trim();
 
-**Probability Up:** ${prediction.probabilityUp}
-**Confidence:** ${prediction.confidence}
-**Risk Tier:** ${prediction.riskTier}
-
-💬 **Reasons:**
-${prediction.explanationBullets.map((b: string) => "• " + b).join("\n")}
-      `.trim();
-
-      // Add to chat
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now(), role: "assistant", content: formatted },
-      ]);
-
-      playAudio(formatted);
-    } catch (err) {
-      console.error("Prediction error:", err);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          role: "assistant",
-          content: "⚠️ Prediction error occurred.",
-        },
-      ]);
-    }
-  };
-
-  // ----------------------------------------
-  // 🧠 GPT (kept exactly as before)
-  // ----------------------------------------
-  const sendMessageToGPT = async (text: string) => {
-    try {
-      const res = await fetch("/api/chat", {
+      // 2️⃣ GPT Commentary
+      const chatRes = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text }),
       });
 
-      const data = await res.json();
+      const chatData = await chatRes.json();
+      const gptReply = chatData.reply || "No GPT response.";
 
-      if (!res.ok) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: Date.now(),
-            role: "assistant",
-            content: "Error: GPT request failed.",
-          },
-        ]);
-        return;
-      }
+      const gptSection = `
+🤖 **GPT Commentary**
+${gptReply}
+`.trim();
 
-      const reply = data.reply || "No response.";
+      // 3️⃣ Combine beautifully
+      const combinedPretty = `
+✨ **Prediction Result**
+
+${predictionSection}
+
+---
+
+${gptSection}
+      `.trim();
+
+      // Add assistant message
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now(), role: "assistant", content: combinedPretty },
+      ]);
+
+      playAudio(combinedPretty);
+    } catch (err) {
+      console.error("Prediction/GPT error:", err);
 
       setMessages((prev) => [
         ...prev,
-        { id: Date.now(), role: "assistant", content: reply },
+        {
+          id: Date.now(),
+          role: "assistant",
+          content:
+            "⚠️ Something went wrong while generating your prediction or commentary.",
+        },
       ]);
-
-      playAudio(reply);
-    } catch (err) {
-      console.error("GPT fetch error:", err);
     }
-  };
-
-  // ----------------------------------------
-  // COMBINED SEND HANDLER
-  // ----------------------------------------
-  const handleSend = async (text: string) => {
-    // 1. Add user message
-    setMessages((prev) => [
-      ...prev,
-      { id: Date.now(), role: "user", content: text },
-    ]);
-
-    // 2. Call backend prediction
-    await handlePredict(text);
-
-    // 3. Also call GPT (optional)
-    await sendMessageToGPT(text);
   };
 
   // ----------------------------------------
@@ -195,7 +159,7 @@ ${prediction.explanationBullets.map((b: string) => "• " + b).join("\n")}
         </div>
 
         {/* CHAT */}
-        <div className="flex-1 relative px-10 py-10 overflow-y-auto">
+        <div className="flex-1 px-10 py-10 overflow-y-auto">
           <div className="space-y-6 mt-6">
             {messages.map((m) => (
               <div
@@ -206,11 +170,11 @@ ${prediction.explanationBullets.map((b: string) => "• " + b).join("\n")}
               >
                 <div
                   className={`
-                    relative max-w-xl p-4 rounded-xl border
+                    relative max-w-xl p-5 rounded-xl border leading-relaxed whitespace-pre-wrap
                     ${
                       m.role === "user"
-                        ? "bg-[#AF1281] border-[#CF268A] text-white"
-                        : "bg-[#360167]/40 border-[#6B0772] text-white"
+                        ? "bg-[#AF1281] border-[#CF268A]"
+                        : "bg-[#360167]/40 border-[#6B0772]"
                     }
                   `}
                 >
@@ -245,7 +209,6 @@ ${prediction.explanationBullets.map((b: string) => "• " + b).join("\n")}
 
               const text = input.value.trim();
               input.value = "";
-
               handleSend(text);
             }}
           >
